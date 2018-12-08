@@ -15,7 +15,7 @@ fi
 if grep -Fq "alias wp-cli=" ~/.bash_aliases; then
 	echo "wp-cli alias present, not adding to ~/.bash_aliases"
 else
-	echo "alias wp-cli='docker-compose run --rm wp-cli_${PWD##*/}'" >> ~/.bash_aliases
+	echo 'alias wp-cli="docker-compose run --rm wp-cli_${PWD##*/}"' >> ~/.bash_aliases
 	source ~/.bash_aliases
 	echo "wp-cli alias usage: wp-cli <command/args/opts>"
 fi
