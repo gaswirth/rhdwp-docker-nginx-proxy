@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 # Start the docker network
-docker network create nginx-proxy
+NETSTART=$(docker network ls --filter name=nginx-proxy --format yes)
+if [ "${NETSTART}" != "yes" ]; then
+	echo "Starting nginx-proxy network..."
+	docker network create nginx-proxy
+fi
 
 # Create necessary directories
 mkdir -p certs conf.d html vhost.d
