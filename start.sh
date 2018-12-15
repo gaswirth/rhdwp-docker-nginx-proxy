@@ -27,6 +27,7 @@ fi
 # Add empty vports file
 if [ ! -e ./vports ]; then
 	touch vports
+	echo "# This file is used to register virtual ports. This file is appended to automatically." > vports
 fi
 
 # Start the nginx-proxy container
