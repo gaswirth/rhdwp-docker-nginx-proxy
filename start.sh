@@ -20,5 +20,10 @@ else
 	echo "wp-cli alias usage: wp-cli <command/args/opts>"
 fi
 
+# Add empty vports file
+if [ ! -e ./vports ]; then
+	touch vports
+fi
+
 # Start the nginx-proxy container
 docker-compose up -d
