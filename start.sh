@@ -21,7 +21,7 @@ if grep -Fq "alias wp-cli=" ~/.bash_aliases; then
 else
 	echo 'alias wp-cli="docker-compose run --rm wp-cli_${PWD##*/}"' >> ~/.bash_aliases
 	source ~/.bash_aliases
-	echo "wp-cli alias usage: wp-cli <command/args/opts>"
+	echo "wp-cli alias usage: wp-cli_CONTAINER <command/args/opts>"
 fi
 
 # Add empty vports file
