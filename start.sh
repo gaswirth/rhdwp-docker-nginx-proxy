@@ -4,6 +4,7 @@
 networkUp=$(docker network ls --filter name=nginx-proxy --format yes)
 if [ "${networkUp}" != 'up' ]; then
 	echo "Starting docker network nginx-proxy..."
+	docker network create nginx-proxy
 fi
 
 # Create necessary directories
