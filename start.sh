@@ -33,4 +33,9 @@ if [ ! -e ./vports ]; then
 fi
 
 # Start the nginx-proxy container
-docker-compose up -d
+read -r -p "Start nginx-proxy [Y/n]?" start
+if [ "${start}" = "y" ] || [ "${start}" = "Y" ]; then
+	docker-compose up -d
+else
+	echo 'nginx-proxy ready!'
+fi
