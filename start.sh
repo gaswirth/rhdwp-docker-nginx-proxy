@@ -33,7 +33,7 @@ if [ ! -e ./vports ]; then
 fi
 
 # Make sure postfix is installed
-if [ ! -z "$(command -v postfix)" ]; then
+if [ -z "$(command -v postfix)" ]; then
 	sudo apt -y install postfix
 fi
 
