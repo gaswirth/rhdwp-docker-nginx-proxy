@@ -39,6 +39,7 @@ fi
 
 # /etc/postfix/main.cf
 ## mynetworks
+echo "Setting up host postfix..."
 if ! grep -q "^mynetworks.*172.16.0.0/12*" /etc/postfix/main.cf; then
         sudo sed -i.pre-docker -e '/^mynetworks/s/$/ 172.16.0.0\/12/' /etc/postfix/main.cf
 fi
