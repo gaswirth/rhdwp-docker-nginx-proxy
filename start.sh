@@ -20,7 +20,6 @@ else
 		echo "wp-cli alias present, not adding to ${homeDir}/.bash_aliases"
 	else
 		echo "alias wp-cli='"'docker-compose run --rm wp-cli_${PWD##*/}'"'" >> "${homeDir}/.bash_aliases"
-		# shellcheck source="/home/${homeDir}"
 		source "${homeDir}/.bash_aliases"
 		echo 'wp-cli alias usage: wp-cli_CONTAINER <command/args/opts>'
 	fi
