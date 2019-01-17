@@ -44,7 +44,7 @@ if ! grep -q "^mynetworks.*172.16.0.0/12*" /etc/postfix/main.cf; then
 fi
 # inet_interfaces
 if ! grep -q "^inet_interfaces.*172.17.0.1" /etc/postfix/main.cf; then
-        sudo sed -i.pre-docker -e '/^inet_interfaces/s/$/, 172.17.0.1/' /etc/postfix/main.cf
+	sed -i.pre-docker -e '/^inet_interfaces/s/^.*$/inet_interfaces = 172.17.0.1/' /etc/postfix/main.cf
 fi
 
 # Start the nginx-proxy container
