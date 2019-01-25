@@ -31,7 +31,10 @@ else
 	echo "No wp-cli alias specified, skipping."
 fi
 
-# Add vports file
+# Nginx customizations
+echo "client_max_body_size 20m;" > conf.d/custom_proxy_settings.conf
+
+# Add vports reference file
 if [ ! -e ./vports ]; then
 	touch vports
 	echo '# This file is used to register virtual ports. This file is appended to automatically.' > vports
