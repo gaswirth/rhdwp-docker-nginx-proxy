@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -x
 homeDir=/home/$(whoami)
 networkUp=$(docker network ls --filter name=nginx-proxy --format yes)
 
@@ -33,12 +33,6 @@ fi
 
 # Nginx customizations
 echo "client_max_body_size 20m;" > conf.d/custom_proxy_settings.conf
-
-# Add vports reference file
-if [ ! -e ./vports ]; then
-	touch vports
-	echo '# This file is used to register virtual ports. This file is appended to automatically.' > vports
-fi
 
 # Make sure postfix is installed
 if [ -z "$(command -v postfix)" ]; then
