@@ -16,6 +16,11 @@ services:
       - ./certs:/etc/nginx/certs:ro
     environment:
       ENABLE_IPV6: "true"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
   
   nginx-gen:
     image: jwilder/docker-gen
@@ -46,9 +51,9 @@ services:
     environment:
       NGINX_PROXY_CONTAINER: "nginx-proxy"
       NGINX_DOCKER_GEN_CONTAINER: "nginx-gen"
-      # staging:
-      ACME_CA_URI: "https://acme-staging.api.letsencrypt.org/directory"
-      DEBUG: "true"
+      # Debug/staging:
+      # ACME_CA_URI: "https://acme-staging.api.letsencrypt.org/directory"
+      # DEBUG: "true"
     logging:
       driver: "json-file"
       options:
