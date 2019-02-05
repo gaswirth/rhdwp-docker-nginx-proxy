@@ -10,7 +10,7 @@ if [ "${networkUp}" != 'yes' ]; then
 fi
 
 # Create necessary directories
-mkdir -p certs conf.d html vhost.d
+mkdir -p certs conf.d html htpasswd vhost.d
 
 # Add wp-cli alias to ~/.bash_aliases if it doesn't exist
 read -p "WP-CLI alias prefix (leave blank to skip): " wpcli_prefix
@@ -21,7 +21,7 @@ if [ ! -z "${wpcli_prefix}" ]; then
 		if grep -Fq "alias ${wpcli_prefix}=" "${homeDir}/.bash_aliases"; then
 			echo "${wpcli_prefix} alias present, not adding to ${homeDir}/.bash_aliases"
 		else
-			echo "alias ${wpcli_alias}='"'docker-compose run --rm wp-cli_${PWD##*/}'"'" >> "${homeDir}/.bash_aliases"
+			echo "alias ${wpcli_alias}='"'docker-compose run --rm ${PWD##*/}_wp-cli'"'" >> "${homeDir}/.bash_aliases"
 			source "${homeDir}/.bash_aliases"
 			echo "wp-cli alias usage: ${wpcli_prefix}-cli_CONTAINER <command/args/opts>"
 		fi
