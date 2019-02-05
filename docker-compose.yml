@@ -1,6 +1,6 @@
 version: '3'
 services:
-  nginx:
+  nginx-proxy:
     image: nginx:alpine
     container_name: nginx-proxy
     restart: unless-stopped
@@ -12,6 +12,7 @@ services:
     volumes:
       - ./conf.d:/etc/nginx/conf.d
       - ./vhost.d:/etc/nginx/vhost.d
+      - ./htpasswd:/etc/nginx/htpasswd
       - ./html:/usr/share/nginx/html
       - ./certs:/etc/nginx/certs:ro
     environment:
@@ -24,7 +25,7 @@ services:
   
   nginx-gen:
     image: jwilder/docker-gen
-    command: -notify-sighup nginx -watch -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+    command: -notify-sighup nginx-proxy -watch -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     container_name: nginx-gen
     restart: unless-stopped
     volumes:
@@ -36,29 +37,29 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   nginx-letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: nginx-letsencrypt
-    restart: always
-    depends_on:
-      - nginx
-      - nginx-gen
-    volumes:
-      - ./conf.d:/etc/nginx/conf.d
-      - ./vhost.d:/etc/nginx/vhost.d
-      - ./html:/usr/share/nginx/html
-      - ./certs:/etc/nginx/certs:rw
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      NGINX_PROXY_CONTAINER: "nginx-proxy"
-      NGINX_DOCKER_GEN_CONTAINER: "nginx-gen"
-      # Debug/staging:
-      # ACME_CA_URI: "https://acme-staging.api.letsencrypt.org/directory"
-      # DEBUG: "true"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "1m"
-        max-file: "3"
+   image: jrcs/letsencrypt-nginx-proxy-companion
+   container_name: nginx-letsencrypt
+   restart: always
+   depends_on:
+     - nginx-proxy
+     - nginx-gen
+   volumes:
+     - ./conf.d:/etc/nginx/conf.d
+     - ./vhost.d:/etc/nginx/vhost.d
+     - ./html:/usr/share/nginx/html
+     - ./certs:/etc/nginx/certs:rw
+     - /var/run/docker.sock:/var/run/docker.sock:ro
+   environment:
+     NGINX_PROXY_CONTAINER: "nginx-proxy"
+     NGINX_DOCKER_GEN_CONTAINER: "nginx-gen"
+     # Debug/staging:
+     # ACME_CA_URI: "https://acme-staging.api.letsencrypt.org/directory"
+     # DEBUG: "true"
+   logging:
+     driver: "json-file"
+     options:
+       max-size: "1m"
+       max-file: "3"
     
 volumes:
   conf.d:
