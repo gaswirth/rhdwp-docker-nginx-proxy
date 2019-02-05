@@ -1,5 +1,6 @@
 certs/
 conf.d/
 html/
+htpasswd/
 vhost.d/
 vports
