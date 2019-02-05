@@ -33,6 +33,7 @@ services:
       - ./vhost.d:/etc/nginx/vhost.d
       - ./html:/usr/share/nginx/html
       - ./certs:/etc/nginx/certs:ro
+      - ./htpasswd:/etc/nginx/htpasswd
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
@@ -64,10 +65,11 @@ services:
        max-file: "3"
     
 volumes:
-  conf.d:
-  vhost.d:
-  html:
   certs:
+  conf.d:
+  html:
+  htpasswd:
+  vhost.d:
     
 networks:
   default:
