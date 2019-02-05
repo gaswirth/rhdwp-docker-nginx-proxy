@@ -35,6 +35,8 @@ services:
       - ./certs:/etc/nginx/certs:ro
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    environment:
+      RESOLVERS: "1.1.1.1"
 
   nginx-letsencrypt:
    image: jrcs/letsencrypt-nginx-proxy-companion
