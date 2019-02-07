@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -x
+#set -x
+
 homeDir=/home/$(whoami)
 networkUp=$(docker network ls --filter name=nginx-proxy --format yes)
 
@@ -21,9 +22,8 @@ if [ ! -z "${wpcli_prefix}" ]; then
 		if grep -Fq "alias ${wpcli_prefix}=" "${homeDir}/.bash_aliases"; then
 			echo "${wpcli_prefix} alias present, not adding to ${homeDir}/.bash_aliases"
 		else
-			echo "alias ${wpcli_alias}='"'docker-compose run --rm ${PWD##*/}_wp-cli'"'" >> "${homeDir}/.bash_aliases"
+			echo "alias ${wpcli_alias}='docker-compose run --rm wp-cli'" >> "${homeDir}/.bash_aliases"
 			source "${homeDir}/.bash_aliases"
-			echo "wp-cli alias usage: ${wpcli_prefix}-cli_CONTAINER <command/args/opts>"
 		fi
 	fi
 
@@ -32,22 +32,12 @@ else
 fi
 
 # Nginx customizations
-echo "client_max_body_size 20m;" > conf.d/custom_proxy_settings.conf
+echo "client_max_body_size 50m;" > conf.d/custom_proxy_settings.conf
+echo "client_body_buffer_size 50m;" > conf.d/custom_proxy_settings.conf
 
 # Make sure postfix is installed
 if [ -z "$(command -v postfix)" ]; then
 	sudo apt -y install postfix
-fi
-
-# /etc/postfix/main.cf
-## mynetworks
-echo "Setting up host postfix..."
-if ! grep -q "^mynetworks.*172.16.0.0/12*" /etc/postfix/main.cf; then
-        sudo sed -i.pre-docker -e '/^mynetworks/s/$/ 172.16.0.0\/12/' /etc/postfix/main.cf
-fi
-# inet_interfaces
-if ! grep -q "^inet_interfaces.*172.17.0.1" /etc/postfix/main.cf; then
-	sed -i.pre-docker -e '/^inet_interfaces/s/^.*$/inet_interfaces = 172.17.0.1/' /etc/postfix/main.cf
 fi
 
 # Start the nginx-proxy container
