@@ -31,15 +31,6 @@ else
 	echo "No wp-cli alias specified, skipping."
 fi
 
-# Nginx customizations
-echo "client_max_body_size 50m;" > conf.d/custom_proxy_settings.conf
-echo "client_body_buffer_size 50m;" > conf.d/custom_proxy_settings.conf
-
-# Make sure postfix is installed
-if [ -z "$(command -v postfix)" ]; then
-	sudo apt -y install postfix
-fi
-
 # Start the nginx-proxy container
 read -r -p "Start nginx-proxy [Y/n]?" start
 if [ "${start}" = "y" ] || [ "${start}" = "Y" ]; then

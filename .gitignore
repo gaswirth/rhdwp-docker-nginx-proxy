@@ -3,4 +3,3 @@ conf.d/default.conf
 html/
 htpasswd/
 vhost.d/
-vports
