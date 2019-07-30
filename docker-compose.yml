@@ -38,6 +38,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
       RESOLVERS: "1.1.1.1"
+      SSL_POLICY: "Mozilla-Modern"
 
   nginx-letsencrypt:
    image: jrcs/letsencrypt-nginx-proxy-companion
